@@ -52,9 +52,13 @@ class _ChatRoomState extends State<ChatRoom> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(
-                      Icons.menu_rounded,
-                      size: 30,
+                    IconButton(
+                      icon:Icon(Icons.logout,
+                      size: 30,),
+                      onPressed: () {
+                        final provider1 = Provider.of<GoogleSignInProvider>(context,listen: false);
+                        provider1.logout();
+                      },
                     ),
                     const Text(
                       "Bitter App",
@@ -134,30 +138,32 @@ class _ChatRoomState extends State<ChatRoom> {
                                       backgroundImage:
                                           NetworkImage(user.photoURL!),
                                     ),
-                                    Container(
-                                      constraints: BoxConstraints(
-                                          minWidth: size.width / 3,
-                                          maxWidth: size.width - 20,
-                                          minHeight: 0,
-                                          maxHeight: double.infinity),
-                                      margin: EdgeInsets.fromLTRB(8, 6, 8, 6),
-                                      padding:
-                                          EdgeInsets.fromLTRB(18, 18, 18, 18),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(17.36),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 2,
-                                            color: Colors.grey,
-                                            offset: Offset(0, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Text(
-                                        chatMessage.message,
-                                        style: TextStyle(fontSize: 16),
+                                    Flexible(
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                            minWidth: size.width / 3,
+                                            maxWidth: size.width - 20,
+                                            minHeight: 0,
+                                            maxHeight: double.infinity),
+                                        margin: EdgeInsets.fromLTRB(8, 6, 8, 6),
+                                        padding:
+                                            EdgeInsets.fromLTRB(18, 18, 18, 18),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(17.36),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 2,
+                                              color: Colors.grey,
+                                              offset: Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Text(
+                                          chatMessage.message,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
                                       ),
                                     ),
                                     Text(
