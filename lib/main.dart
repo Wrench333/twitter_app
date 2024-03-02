@@ -4,16 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter_app/Data%20Storage%20and%20API%20Calls/firestore_service.dart';
 import 'package:twitter_app/Data%20Storage%20and%20API%20Calls/google_sign_in.dart';
+import 'package:twitter_app/UI/chatroom.dart';
 import 'package:twitter_app/UI/login.dart';
 import 'package:twitter_app/UI/sign_up.dart';
 import 'Data Storage and API Calls/chat_provider.dart';
 import 'Data Storage and API Calls/firebase_options.dart';
 import 'UI/home.dart';
 
+final navigatorkey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try{
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     await FirebaseService().initNotifications();
   } catch (e) {
     print("Failed to initialize Firebase App: $e");
@@ -21,7 +26,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-final GoRouter router = GoRouter(routes: [
+final GoRouter router = GoRouter(navigatorKey: navigatorkey, routes: [
   GoRoute(
     path: '/',
     builder: (context, state) => const LoginPage(),
@@ -30,6 +35,9 @@ final GoRouter router = GoRouter(routes: [
     path: '/home',
     builder: (context, state) => const Home(),
   ),
+  GoRoute(path: '/chatroom',
+    builder: (context, state) => const ChatRoom(),
+  )
 ]);
 
 class MyApp extends StatelessWidget {

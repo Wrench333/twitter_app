@@ -13,6 +13,7 @@ import '../Data Storage and API Calls/google_sign_in.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({super.key});
+  static const route = '/chatroom';
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
