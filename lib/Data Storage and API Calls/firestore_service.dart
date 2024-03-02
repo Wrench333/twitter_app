@@ -42,10 +42,12 @@ class FirebaseService {
       await db.doc(safeKey).set({
         'messages': chat
             .map((message) => {
-                  'username': message.username,
-                  'message': message.message,
-                  'time': message.dateTime,
-                })
+          'username': message.username,
+          'gmail': message.gmail,
+          'message': message.message,
+          'time': message.dateTime,
+          'profile': message.profile,
+        })
             .toList(),
       });
     } catch (e) {
@@ -59,19 +61,21 @@ class FirebaseService {
       String? email = _auth.currentUser?.email;
       if (email != null) {
         DocumentSnapshot documentSnapshot =
-            await db.doc(safeKey).get();
+        await db.doc(safeKey).get();
 
         if (documentSnapshot.exists) {
-            List<dynamic> messages = documentSnapshot['messages'];
-            List<ChatMessage> chat = messages.map((message) {
-              return ChatMessage(
-                username: message['username'],
-                message: message['message'],
-                dateTime: (message['time'] as Timestamp).toDate(),
-              );
-            }).toList();
+          List<dynamic> messages = documentSnapshot['messages'];
+          List<ChatMessage> chat = messages.map((message) {
+            return ChatMessage(
+              username: message['username'],
+              gmail: message['gmail'],
+              message: message['message'],
+              dateTime: (message['time'] as Timestamp).toDate(),
+              profile: message['profile']
+            );
+          }).toList();
 
-            return chat;
+          return chat;
         }
       }
     } catch (e) {

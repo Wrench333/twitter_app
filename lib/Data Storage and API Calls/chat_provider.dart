@@ -20,8 +20,8 @@ class ChatProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void addMessage(String user, String message,) {
-    ChatMessage chatMessage = ChatMessage(username: user, message: message, dateTime: DateTime.now()) ;
+  void addMessage(String user, String message,String gmail, String profile) {
+    ChatMessage chatMessage = ChatMessage(username: user, message: message, dateTime: DateTime.now(),gmail: gmail,profile: profile) ;
     _chat.add(chatMessage);
     notifyListeners();
   }

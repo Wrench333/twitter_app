@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:twitter_app/Data%20Storage%20and%20API%20Calls/chat_provider.dart';
@@ -57,7 +58,31 @@ class _ChatRoomState extends State<ChatRoom> {
                       size: 30,),
                       onPressed: () {
                         final provider1 = Provider.of<GoogleSignInProvider>(context,listen: false);
-                        provider1.logout();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Center(child: Text("Logout")),
+                              content: Text(
+                                  "Are you sure you want to logout from this account?"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  child: Text("Cancel"),
+                                ),
+                                TextButton(
+                                  child: Text("Logout"),
+                                  onPressed: () {
+                                    context.pop();
+                                    provider1.logout();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
                     const Text(
@@ -68,9 +93,31 @@ class _ChatRoomState extends State<ChatRoom> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 18.0,
-                      backgroundImage: NetworkImage(user!.photoURL!),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Current User Details"),
+                              content: Text(
+                                  "Name: ${user.displayName}\nEmail: ${user.email}\nPh No:${user.phoneNumber ?? 1234567890}"),
+                              actions: [
+                                TextButton(
+                                  child: Text("OK"),
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 18.0,
+                        backgroundImage: NetworkImage(user!.photoURL!),
+                      ),
                     ),
                   ],
                 ),
@@ -125,7 +172,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                     CircleAvatar(
                                       radius: 14.0,
                                       backgroundImage:
-                                          NetworkImage(user.photoURL!),
+                                          NetworkImage(chatMessage.profile),
                                     ),
                                   ],
                                 )
@@ -136,7 +183,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                     CircleAvatar(
                                       radius: 14.0,
                                       backgroundImage:
-                                          NetworkImage(user.photoURL!),
+                                          NetworkImage(chatMessage.profile),
                                     ),
                                     Flexible(
                                       child: Container(
@@ -213,7 +260,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         fixedSize: Size(10, 50),
                         backgroundColor: Colors.blue[50]),
                     onPressed: () {
-                      provider.addMessage(user.displayName!, controller.text);
+                      provider.addMessage(user.displayName!, controller.text,user.email!,user.photoURL!);
                       controller.text = '';
                       provider.chatStore(user.displayName!);
                       scrollController.animateTo(
